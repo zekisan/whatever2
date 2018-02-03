@@ -1,5 +1,6 @@
 export const UPDATE_ITEMS_GROUPS = 'UPDATE_ITEMS_GROUPS';
 export const SET_MODE = 'SET_MODE';
+export const UPDATE_EDITABLE_COLUMN = 'UPDATE_EDITABLE_COLUMN';
 
 export const updateItemsGroups = (reorderedSubGroup) => (dispatch, getState) => {
     const originalItemsGroups = getState().layoutHeader.toJS().items;
@@ -28,3 +29,8 @@ export const removeItem = item => (dispatch, getState) => {
 
 export const startExclusion = () => (dispatch) => (dispatch({ type: SET_MODE, value: 'exclusion' }));
 export const finishExclusion = () => (dispatch) => (dispatch({ type: SET_MODE, value: 'none' }));
+
+export const startEdition = (item) => (dispatch) => (dispatch({ type: SET_MODE, value: 'edition', editableColumn: item}));
+export const finishEdition = () => (dispatch) => (dispatch({ type: SET_MODE, value: 'none' }));
+
+export const updateEditableColumn = (item) => (dispatch) => (dispatch({ type: UPDATE_EDITABLE_COLUMN, item }));

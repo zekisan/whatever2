@@ -1,8 +1,9 @@
 import Immutable from 'immutable';
-import { 
+import {
     UPDATE_ITEMS_GROUPS,
     SET_MODE,
- } from '../actions/layoutHeader';
+    UPDATE_EDITABLE_COLUMN,
+} from '../actions/layoutHeader';
 
 const DEFAULT_STATE = Immutable.fromJS({
     items: [
@@ -83,14 +84,18 @@ const DEFAULT_STATE = Immutable.fromJS({
     ],
     // none, creation, edition, exclusion
     currentMode: 'none',
+    editableColumn: {},
 });
 
 export default function reducer(state = DEFAULT_STATE, action) {
-    switch(action.type) {
+    switch (action.type) {
         case UPDATE_ITEMS_GROUPS:
             return state.set('items', action.items);
         case SET_MODE:
-            return state.set('currentMode', action.value);
+            return state.set('currentMode', action.value)
+                .set('editableColumn', action.editableColumn || {});
+        case UPDATE_EDITABLE_COLUMN:
+            return state.set('editableColumn', action.item);
         default:
             return state;
     }

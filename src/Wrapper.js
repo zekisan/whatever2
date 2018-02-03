@@ -7,7 +7,7 @@ import * as layoutHeaderActions from './actions/layoutHeader';
 import ActionsWrapper from './ActionsWrapper';
 import DraggableArea from './DraggableArea';
 
-const Wrapper = ({ items, currentMode, headerActions }) => {
+const Wrapper = ({ items, currentMode, headerActions, editableColumn }) => {
     const groupedItems = [];
     for (let i = 1; i <= 3; i++) {
         const group = items.filter(item => item.line === i);
@@ -27,6 +27,7 @@ const Wrapper = ({ items, currentMode, headerActions }) => {
                             key={index}
                             currentMode={currentMode}
                             items={group}
+                            editableColumn={editableColumn}
                             actions={headerActions} />
                     ))
                 }
@@ -39,19 +40,21 @@ Wrapper.propTypes = {
     items: PropTypes.array.isRequired,
     currentMode: PropTypes.string.isRequired,
     headerActions: PropTypes.object.isRequired,
+    editableColumn: PropTypes.object.isRequired,
 }
 
 Wrapper.defaultProps = {
     items: [],
     currentMode: 'none',
     headerActions: {},
+    editableColumn: {},
 };
 
 const mapStateToProps = ({ layoutHeader, layoutHeader2 }) => (
     {
         items: layoutHeader.toJS().items,
         currentMode: layoutHeader.toJS().currentMode,
-        layoutHeader2: layoutHeader2.toJS(),
+        editableColumn: layoutHeader.toJS().editableColumn,
     }
 );
 

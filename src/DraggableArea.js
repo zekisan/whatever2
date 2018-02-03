@@ -54,7 +54,7 @@ export default class DraggableArea extends Component {
     }
 
     render() {
-        const { items, currentMode, actions } = this.props;
+        const { items, currentMode, editableColumn, actions } = this.props;
         const isDragAndDropDisabled = currentMode !== 'none';
         return (
             <Row style={{ marginTop: '15px', marginBottom: '15px', backgroundColor: '#fff' }}>
@@ -84,11 +84,17 @@ export default class DraggableArea extends Component {
                                                         )}
                                                     >
                                                         {
-                                                            currentMode === 'edition' ?
-                                                                <ColumnForm item={item} /> :
+                                                            (currentMode === 'edition' &&
+                                                                editableColumn.line === item.line &&
+                                                                editableColumn.columnId === item.columnId) ?
+                                                                <ColumnForm
+                                                                    onUpdate={actions.updateEditableColumn}
+                                                                    onCancel={actions.finishEdition}
+                                                                    item={editableColumn} /> :
                                                                 <Column
                                                                     item={item}
                                                                     onRemove={actions.removeItem}
+                                                                    onEdit={actions.startEdition}
                                                                     willRemove={currentMode === 'exclusion'} />
                                                         }
                                                     </div>
@@ -112,10 +118,12 @@ DraggableArea.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentMode: PropTypes.string,
     actions: PropTypes.object,
+    editableColumn: PropTypes.object,
 };
 
 DraggableArea.defaultProps = {
     items: [],
     currentMode: 'none',
     actions: {},
+    editableColumn: {},
 };
