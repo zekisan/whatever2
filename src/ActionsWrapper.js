@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, ButtonToolbar } from 'react-bootstrap';
 
-const ActionsWrapper = ({ currentMode, finishExclusion, startExclusion }) => {
+const ActionsWrapper = ({ currentMode, finishExclusion, startExclusion, startCreation }) => {
     switch (currentMode) {
         case 'exclusion':
             return (
@@ -17,14 +17,14 @@ const ActionsWrapper = ({ currentMode, finishExclusion, startExclusion }) => {
         default:
             return (
                 <Row>
-                    <Col md={2}>
-                        <span>AÇÕES: </span>
+                    <Col md={2} className="text-right">
+                        <span className="align-middle">AÇÕES: </span>
                     </Col>
-                    <Col md={2}>
-                        <Button bsStyle="primary">Adicionar</Button>
-                    </Col>
-                    <Col md={2}>
-                        <Button bsStyle="primary" onClick={startExclusion}>Excluir</Button>
+                    <Col md={4}>
+                        <ButtonToolbar>
+                            <Button bsStyle="primary" onClick={startCreation}>Adicionar</Button>
+                            <Button bsStyle="primary" onClick={startExclusion}>Excluir</Button>
+                        </ButtonToolbar>
                     </Col>
                 </Row>
             )
@@ -34,13 +34,15 @@ const ActionsWrapper = ({ currentMode, finishExclusion, startExclusion }) => {
 ActionsWrapper.propTypes = {
     currentMode: PropTypes.string,
     finishExclusion: PropTypes.func,
-    startExclusion: PropTypes.func
+    startExclusion: PropTypes.func,
+    startCreation: PropTypes.func,
 };
 
 ActionsWrapper.defaultProps = {
     currentMode: 'none',
-    finishExclusion: () => {},
-    startExclusion: () => {},
+    finishExclusion: () => { },
+    startExclusion: () => { },
+    startCreation: () => { },
 };
 
 export default ActionsWrapper;

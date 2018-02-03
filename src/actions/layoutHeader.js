@@ -50,3 +50,17 @@ export const saveEditableColumn = (savingItem) => (dispatch, getState) => {
     dispatch({ type: UPDATE_ITEMS_GROUPS, items });
     restartCurrentMode()(dispatch);
 };
+
+export const startCreation = () => (dispatch) => (dispatch({ type: SET_MODE, value: 'creation', editableColumn: {} }));
+export const finishCreation = () => (dispatch) => (restartCurrentMode()(dispatch));
+
+export const createColumn = (item) => (dispatch, getState) => {
+    let items = [...getState().layoutHeader.toJS().items];
+    const itemsByGroup = items.filter(i => i.line.toString() === item.line.toString());
+
+    items.push({ ...item, line: Number(item.line), columnOrder: ((itemsByGroup.length + 1)* 10).toString(), columnId: (itemsByGroup.length + 1).toString() });
+    items = items.sort((a, b) => a.line - b.line || Number(a.columnOrder) - Number(b.columnOrder));
+
+    dispatch({ type: UPDATE_ITEMS_GROUPS, items });
+    restartCurrentMode()(dispatch);
+}

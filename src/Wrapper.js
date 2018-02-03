@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as layoutHeaderActions from './actions/layoutHeader';
 import ActionsWrapper from './ActionsWrapper';
 import DraggableArea from './DraggableArea';
+import CreateColumnForm from './CreateColumnForm';
 
 const Wrapper = ({ items, currentMode, headerActions, editableColumn, options }) => {
     const groupedItems = [];
@@ -17,21 +18,39 @@ const Wrapper = ({ items, currentMode, headerActions, editableColumn, options })
     return (
         <Row style={{ backgroundColor: '#e4e4e4' }}>
             <Col md={12}>
-                <ActionsWrapper 
-                    currentMode={currentMode}
-                    startExclusion={headerActions.startExclusion}
-                    finishExclusion={headerActions.finishExclusion} />
-                {
-                    groupedItems.map((group, index) => (
-                        <DraggableArea
-                            key={index}
-                            currentMode={currentMode}
-                            items={group}
-                            options={options}
-                            editableColumn={editableColumn}
-                            actions={headerActions} />
-                    ))
-                }
+                <Row>
+                    <Col md={12}>
+                        {
+                            currentMode === 'creation' ?
+                                <CreateColumnForm
+                                    onUpdate={headerActions.updateEditableColumn}
+                                    onSave={headerActions.createColumn}
+                                    onCancel={headerActions.finishCreation}
+                                    options={options}
+                                    item={editableColumn} /> :
+                                <ActionsWrapper
+                                    currentMode={currentMode}
+                                    startCreation={headerActions.startCreation}
+                                    startExclusion={headerActions.startExclusion}
+                                    finishExclusion={headerActions.finishExclusion} />
+                        }
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12}>
+                        {
+                            groupedItems.map((group, index) => (
+                                <DraggableArea
+                                    key={index}
+                                    currentMode={currentMode}
+                                    items={group}
+                                    options={options}
+                                    editableColumn={editableColumn}
+                                    actions={headerActions} />
+                            ))
+                        }
+                    </Col>
+                </Row>
             </Col>
         </Row>
     );

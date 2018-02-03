@@ -4,7 +4,7 @@ import { Row, Col, Button } from 'react-bootstrap';
 
 const getValue = (value, collection) => {
     const foundObj = collection.filter(c => c.value === value)[0];
-    return foundObj.text || '';
+    return (foundObj && foundObj.text) || '';
 }
 
 const Column = ({ item, willRemove, onRemove, onEdit, options }) => (

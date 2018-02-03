@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Button, ButtonToolbar, FormControl } from 'react-bootstrap';
 import ColumnModal from './ColumnModal';
 
-export default class ColumnForm extends Component {
+export default class CreateColumnForm extends Component {
     constructor(props) {
         super(props);
         this.state = { showModal: false };
@@ -39,7 +39,23 @@ export default class ColumnForm extends Component {
                 <Row>
                     <Col md={1} />
                     <Col md={1} />
-                    <Col md={1} />
+                    <Col md={1}>
+                    <FormControl
+                            id="line"
+                            componentClass="select"
+                            value={item.line}
+                            placeholder="linha"
+                            onChange={this.handleInputChange}>
+                            <option value=''/>
+                            {
+                                [
+                                    {value: '1', text: '1'},
+                                    {value: '2', text: '2'},
+                                    {value: '3', text: '3'},
+                                ].map(option => <option key={option.value} value={option.value}>{option.text}</option>)
+                            }
+                        </FormControl>
+                    </Col>
                     <Col md={4}>
                         <FormControl
                             value={item.columnContent}
@@ -74,7 +90,7 @@ export default class ColumnForm extends Component {
                 </Row>
                 <br />
                 <Row>
-                    <Col md={3} />
+                    <Col md={2} />
                     <Col md={3}>
                         <ButtonToolbar>
                             <Button bsStyle="primary" onClick={this.onSave}>Salvar</Button>
@@ -92,7 +108,7 @@ export default class ColumnForm extends Component {
     }
 }
 
-ColumnForm.propTypes = {
+CreateColumnForm.propTypes = {
     item: PropTypes.object,
     options: PropTypes.array,
     onUpdate: PropTypes.func,
@@ -100,7 +116,7 @@ ColumnForm.propTypes = {
     onCancel: PropTypes.func,
 };
 
-ColumnForm.defaultProps = {
+CreateColumnForm.defaultProps = {
     item: {},
     options: [],
     onUpdate: () => { },
@@ -109,7 +125,7 @@ ColumnForm.defaultProps = {
 };
 
 const ColumnMask = ({ format, mask, onChange }) => {
-    if (format !== 'C') {
+    if (format !== null && format !== 'C') {
         return (
             <FormControl
                 id="columnMask"
@@ -129,7 +145,7 @@ ColumnMask.propTypes = {
 };
 
 ColumnMask.defaultProps = {
-    format: '',
-    mask: '',
+    format: null,
+    mask: null,
     onChange: () => { },
 };
