@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button, ButtonToolbar, FormControl } from 'react-bootstrap';
 import ColumnModal from './ColumnModal';
+import ColumnMaskInput from './ColumnMaskInput';
 
 export default class ColumnForm extends Component {
     constructor(props) {
@@ -65,8 +66,7 @@ export default class ColumnForm extends Component {
                         </FormControl>
                     </Col>
                     <Col md={2}>
-                        <ColumnMask
-                            id="columnMask"
+                        <ColumnMaskInput
                             mask={item.columnMask}
                             format={item.columnFormat}
                             onChange={this.handleInputChange} />
@@ -106,30 +106,4 @@ ColumnForm.defaultProps = {
     onUpdate: () => { },
     onSave: () => { },
     onCancel: () => { },
-};
-
-const ColumnMask = ({ format, mask, onChange }) => {
-    if (format !== 'C') {
-        return (
-            <FormControl
-                id="columnMask"
-                value={mask}
-                onChange={onChange} />
-        );
-    } else {
-        onChange({ target: { id: "columnMask", value: '' } })
-        return null;
-    }
-}
-
-ColumnMask.propTypes = {
-    format: PropTypes.string,
-    mask: PropTypes.string,
-    onChange: PropTypes.func,
-};
-
-ColumnMask.defaultProps = {
-    format: '',
-    mask: '',
-    onChange: () => { },
 };
