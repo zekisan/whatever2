@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, FormControl } from 'react-bootstrap';
+import { Row, Col, Button, ButtonToolbar, FormControl } from 'react-bootstrap';
 import ColumnModal from './ColumnModal';
 
 export default class ColumnForm extends Component {
@@ -13,12 +13,6 @@ export default class ColumnForm extends Component {
         this.handleModal = this.handleModal.bind(this);
     }
 
-    handleInputChange(event) {
-        const key = event.target.id;
-        const value = event.target.value;
-        this.props.onUpdate(key, value);
-    }
-
     onSave() {
         this.props.onSave(this.props.item);
     }
@@ -27,12 +21,18 @@ export default class ColumnForm extends Component {
         this.props.onCancel();
     }
 
+    handleInputChange(event) {
+        const key = event.target.id;
+        const value = event.target.value;
+        this.props.onUpdate(key, value);
+    }
+
     handleModal() {
         this.setState(prevState => ({ showModal: !prevState.showModal }));
     }
 
     render() {
-        const { item, onUpdate } = this.props;
+        const { item, onUpdate, options } = this.props;
         const { showModal } = this.state;
         return (
             <span>
@@ -44,7 +44,7 @@ export default class ColumnForm extends Component {
                         <FormControl
                             value={item.columnContent}
                             onClick={this.handleModal}
-                            onChange={this.handleInputChange} />
+                            onChange={() => { }} />
                     </Col>
                     <Col md={1}>
                         <FormControl
@@ -52,20 +52,33 @@ export default class ColumnForm extends Component {
                             value={item.columnSize}
                             onChange={this.handleInputChange} />
                     </Col>
-                    <Col md={1}>
+                    <Col md={2}>
                         <FormControl
                             id="columnFormat"
+                            componentClass="select"
                             value={item.columnFormat}
+                            onChange={this.handleInputChange}>
+                            {
+                                options.map(option => <option key={option.value} value={option.value}>{option.text}</option>)
+                            }
+                        </FormControl>
+                    </Col>
+                    <Col md={2}>
+                        <ColumnMask
+                            id="columnMask"
+                            mask={item.columnMask}
+                            format={item.columnFormat}
                             onChange={this.handleInputChange} />
                     </Col>
-                    <Col md={2} />
                 </Row>
+                <br />
                 <Row>
-                    <Col md={2}>
-                        <Button bsStyle="primary" onClick={this.onSave}>Salvar</Button>
-                    </Col>
-                    <Col md={2}>
-                        <Button bsStyle="primary" onClick={this.onCancel}>Cancelar</Button>
+                    <Col md={3} />
+                    <Col md={3}>
+                        <ButtonToolbar>
+                            <Button bsStyle="primary" onClick={this.onSave}>Salvar</Button>
+                            <Button bsStyle="primary" onClick={this.onCancel}>Cancelar</Button>
+                        </ButtonToolbar>
                     </Col>
                 </Row>
                 <ColumnModal
@@ -80,6 +93,7 @@ export default class ColumnForm extends Component {
 
 ColumnForm.propTypes = {
     item: PropTypes.object,
+    options: PropTypes.array,
     onUpdate: PropTypes.func,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
@@ -87,7 +101,34 @@ ColumnForm.propTypes = {
 
 ColumnForm.defaultProps = {
     item: {},
+    options: [],
     onUpdate: () => { },
     onSave: () => { },
     onCancel: () => { },
+};
+
+const ColumnMask = ({ format, mask, onChange }) => {
+    if (format !== 'C') {
+        return (
+            <FormControl
+                id="columnMask"
+                value={mask}
+                onChange={onChange} />
+        );
+    } else {
+        onChange({ target: { id: "columnMask", value: '' } })
+        return null;
+    }
+}
+
+ColumnMask.propTypes = {
+    format: PropTypes.string,
+    mask: PropTypes.string,
+    onChange: PropTypes.func,
+};
+
+ColumnMask.defaultProps = {
+    format: '',
+    mask: '',
+    onChange: () => { },
 };

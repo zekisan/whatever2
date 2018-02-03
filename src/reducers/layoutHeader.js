@@ -14,6 +14,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '10',
             columnSize: '25',
             columnFormat: 'C',
+            columnMask: '',
         },
         {
             line: 1,
@@ -22,6 +23,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '20',
             columnSize: '25',
             columnFormat: 'C',
+            columnMask: '',
         },
         {
             line: 1,
@@ -30,6 +32,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '30',
             columnSize: '25',
             columnFormat: 'C',
+            columnMask: '',
         },
         {
             line: 2,
@@ -38,6 +41,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '10',
             columnSize: '25',
             columnFormat: 'C',
+            columnMask: '',
         },
         {
             line: 2,
@@ -46,6 +50,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '20',
             columnSize: '25',
             columnFormat: 'H',
+            columnMask: '',
         },
         {
             line: 2,
@@ -54,6 +59,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '30',
             columnSize: '25',
             columnFormat: 'D',
+            columnMask: '',
         },
         {
             line: 3,
@@ -62,6 +68,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             columnOrder: '10',
             columnSize: '25',
             columnFormat: 'I',
+            columnMask: '',
         },
     ],
     options: [

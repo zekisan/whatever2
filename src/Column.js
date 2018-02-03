@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'react-bootstrap';
 
-const Column = ({ item, willRemove, onRemove, onEdit }) => (
+const getValue = (value, collection) => {
+    const foundObj = collection.filter(c => c.value === value)[0];
+    return foundObj.text || '';
+}
+
+const Column = ({ item, willRemove, onRemove, onEdit, options }) => (
     <Row>
         <Col md={1}>
             {
@@ -16,7 +21,18 @@ const Column = ({ item, willRemove, onRemove, onEdit }) => (
         <Col md={1}>{item.columnOrder}</Col>
         <Col md={4}>{item.columnContent}</Col>
         <Col md={1}>{item.columnSize}</Col>
-        <Col md={1}>{item.columnFormat}</Col>
+        <Col md={2} className="text-center">
+            <Row>
+                <Col md={12}>
+                    {getValue(item.columnFormat, options)}
+                </Col>
+            </Row>
+            <Row>
+                <Col md={12}>
+                    <ColumnMask mask={item.columnMask} format={item.columnFormat}/>
+                </Col>
+            </Row>
+        </Col>
         <Col md={1}>
             <Button bsStyle="link" onClick={() => onEdit(item)}>editar</Button>
         </Col>
@@ -28,6 +44,7 @@ const Column = ({ item, willRemove, onRemove, onEdit }) => (
 
 Column.propTypes = {
     item: PropTypes.object,
+    options: PropTypes.array,
     willRemove: PropTypes.bool,
     onRemove: PropTypes.func,
     onEdit: PropTypes.func,
@@ -35,9 +52,30 @@ Column.propTypes = {
 
 Column.defaultProps = {
     item: {},
+    options: [],
     willRemove: false,
     onRemove: () => { },
     onEdit: () => { },
 };
 
 export default Column;
+
+const ColumnMask = ({ format, mask }) => {
+    if (format !== 'C') {
+        return (
+            <span>{mask}</span>
+        );
+    }
+
+    return null;
+}
+
+ColumnMask.propTypes = {
+    format: PropTypes.string,
+    mask: PropTypes.string,
+};
+
+ColumnMask.defaultProps = {
+    format: '',
+    mask: '',
+};
