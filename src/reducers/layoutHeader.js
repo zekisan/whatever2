@@ -95,7 +95,7 @@ export default function reducer(state = DEFAULT_STATE, action) {
             return state.set('currentMode', action.value)
                 .set('editableColumn', action.editableColumn || {});
         case UPDATE_EDITABLE_COLUMN:
-            return state.set('editableColumn', action.item);
+            return state.updateIn(['editableColumn'], column => Immutable.fromJS(column).set(action.key, action.value));
         default:
             return state;
     }

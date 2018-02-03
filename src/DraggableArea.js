@@ -89,6 +89,7 @@ export default class DraggableArea extends Component {
                                                                 editableColumn.columnId === item.columnId) ?
                                                                 <ColumnForm
                                                                     onUpdate={actions.updateEditableColumn}
+                                                                    onSave={actions.saveEditableColumn}
                                                                     onCancel={actions.finishEdition}
                                                                     item={editableColumn} /> :
                                                                 <Column
