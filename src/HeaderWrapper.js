@@ -8,7 +8,7 @@ import ActionsWrapper from './ActionsWrapper';
 import DraggableArea from './DraggableArea';
 import CreateColumnForm from './CreateColumnForm';
 
-const Wrapper = ({ items, currentMode, headerActions, editableColumn, options }) => {
+const HeaderWrapper = ({ items, currentMode, headerActions, editableColumn, options }) => {
     const groupedItems = [];
     for (let i = 1; i <= 3; i++) {
         const group = items.filter(item => item.line === i);
@@ -56,21 +56,21 @@ const Wrapper = ({ items, currentMode, headerActions, editableColumn, options })
     );
 };
 
-Wrapper.propTypes = {
+HeaderWrapper.propTypes = {
     items: PropTypes.array.isRequired,
     currentMode: PropTypes.string.isRequired,
     headerActions: PropTypes.object.isRequired,
     editableColumn: PropTypes.object.isRequired,
 }
 
-Wrapper.defaultProps = {
+HeaderWrapper.defaultProps = {
     items: [],
     currentMode: 'none',
     headerActions: {},
     editableColumn: {},
 };
 
-const mapStateToProps = ({ layoutHeader, layoutHeader2 }) => (
+const mapStateToProps = ({ layoutHeader }) => (
     {
         items: layoutHeader.toJS().items,
         currentMode: layoutHeader.toJS().currentMode,
@@ -83,4 +83,4 @@ const mapDispatchToProps = dispatch => {
     return { headerActions: bindActionCreators(layoutHeaderActions, dispatch) }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderWrapper);

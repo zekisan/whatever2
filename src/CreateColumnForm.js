@@ -44,7 +44,7 @@ export default class CreateColumnForm extends Component {
                     <FormControl
                             id="line"
                             componentClass="select"
-                            value={item.line}
+                            value={item.line || ''}
                             placeholder="linha"
                             onChange={this.handleInputChange}>
                             <option value=''/>
@@ -59,21 +59,21 @@ export default class CreateColumnForm extends Component {
                     </Col>
                     <Col md={4}>
                         <FormControl
-                            value={item.columnContent}
+                            value={item.columnContent || ''}
                             onClick={this.handleModal}
                             onChange={() => { }} />
                     </Col>
                     <Col md={1}>
-                        <FormControl
+                        <input className="form-control"
                             id="columnSize"
-                            value={item.columnSize}
+                            value={item.columnSize || ''}
                             onChange={this.handleInputChange} />
                     </Col>
                     <Col md={2}>
                         <FormControl
                             id="columnFormat"
                             componentClass="select"
-                            value={item.columnFormat}
+                            value={item.columnFormat || ''}
                             onChange={this.handleInputChange}>
                             <option value=''/>
                             {

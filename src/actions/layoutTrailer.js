@@ -1,9 +1,9 @@
-export const UPDATE_ITEMS_GROUPS = 'layoutHeader/UPDATE_ITEMS_GROUPS';
-export const SET_MODE = 'layoutHeader/SET_MODE';
-export const UPDATE_EDITABLE_COLUMN = 'layoutHeader/UPDATE_EDITABLE_COLUMN';
+export const UPDATE_ITEMS_GROUPS = 'layoutTrailer/UPDATE_ITEMS_GROUPS';
+export const SET_MODE = 'layoutTrailer/SET_MODE';
+export const UPDATE_EDITABLE_COLUMN = 'layoutTrailer/UPDATE_EDITABLE_COLUMN';
 
 export const updateItemsGroups = (reorderedSubGroup) => (dispatch, getState) => {
-    const originalItems = getState().layoutHeader.toJS().items;
+    const originalItems = getState().layoutTrailer.toJS().items;
     const idx = originalItems.findIndex(i => i.line === reorderedSubGroup[0].line);
 
     const items = [
@@ -16,7 +16,7 @@ export const updateItemsGroups = (reorderedSubGroup) => (dispatch, getState) => 
 };
 
 export const removeItem = item => (dispatch, getState) => {
-    const originalItems = getState().layoutHeader.toJS().items;
+    const originalItems = getState().layoutTrailer.toJS().items;
     const idx = originalItems.findIndex(i => i.line === item.line && i.columnId === item.columnId);
 
     const items = [
@@ -38,7 +38,7 @@ export const finishEdition = () => (dispatch) => (restartCurrentMode()(dispatch)
 export const updateEditableColumn = (key, value) => (dispatch) => (dispatch({ type: UPDATE_EDITABLE_COLUMN, key, value }));
 
 export const saveEditableColumn = (savingItem) => (dispatch, getState) => {
-    const originalItems = getState().layoutHeader.toJS().items;
+    const originalItems = getState().layoutTrailer.toJS().items;
     const idx = originalItems.findIndex(i => i.line === savingItem.line && i.columnId === savingItem.columnId);
 
     const items = [
@@ -55,7 +55,7 @@ export const startCreation = () => (dispatch) => (dispatch({ type: SET_MODE, val
 export const finishCreation = () => (dispatch) => (restartCurrentMode()(dispatch));
 
 export const createColumn = (item) => (dispatch, getState) => {
-    let items = [...getState().layoutHeader.toJS().items];
+    let items = [...getState().layoutTrailer.toJS().items];
     const itemsByGroup = items.filter(i => i.line.toString() === item.line.toString());
 
     items.push({ ...item, line: Number(item.line), columnOrder: ((itemsByGroup.length + 1)* 10).toString(), columnId: (itemsByGroup.length + 1).toString() });

@@ -29,7 +29,7 @@ const Column = ({ item, willRemove, onRemove, onEdit, options }) => (
             </Row>
             <Row>
                 <Col md={12}>
-                    <ColumnMask mask={item.columnMask} format={item.columnFormat}/>
+                    <ColumnMask mask={item.columnMask} format={item.columnFormat} />
                 </Col>
             </Row>
         </Col>
@@ -61,13 +61,13 @@ Column.defaultProps = {
 export default Column;
 
 const ColumnMask = ({ format, mask }) => {
-    if (format !== 'C') {
+    if (format === '' || format === null || typeof format === 'undefined' || format === 'C') {
+        return null;
+    } else {
         return (
             <span>{mask}</span>
         );
     }
-
-    return null;
 }
 
 ColumnMask.propTypes = {
