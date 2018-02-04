@@ -3,6 +3,7 @@ export const SET_MODE = 'layoutDetail/SET_MODE';
 export const UPDATE_EDITABLE_COLUMN = 'layoutDetail/UPDATE_EDITABLE_COLUMN';
 
 export const UPDATE_DETAILS = 'layoutDetail/UPDATE_DETAILS';
+export const UPDATE_EDITABLE_DETAIL = 'layoutDetail/UPDATE_EDITABLE_DETAIL';
 
 export const updateItemsGroups = (reorderedSubGroup) => (dispatch, getState) => {
     const originalItems = getState().layoutTrailer.toJS().items;
@@ -81,3 +82,19 @@ export const removeDetail = detail => (dispatch, getState) => {
 
 export const startDetailEdition = (detail) => (dispatch) => (dispatch({ type: SET_MODE, value: 'detailEdition', editableDetail: detail }));
 export const finishDetailEdition = () => (dispatch) => (restartCurrentMode()(dispatch));
+
+export const updateEditableDetail = (key, value) => (dispatch) => (dispatch({ type: UPDATE_EDITABLE_DETAIL, key, value }));
+
+export const saveEditableDetail = (savingItem) => (dispatch, getState) => {
+    const originalDetails = getState().layoutDetail.toJS().details;
+    const idx = originalDetails.findIndex(i => i.detailOrder === savingItem.detailOrder);
+
+    const details = [
+        ...originalDetails.slice(0, idx),
+        { ...savingItem },
+        ...originalDetails.slice((idx + 1), (originalDetails.length))
+    ]
+
+    dispatch({ type: UPDATE_DETAILS, details });
+    restartCurrentMode()(dispatch);
+};

@@ -8,29 +8,22 @@ import ActionsWrapper from './ActionsWrapper';
 import Detail from './Detail';
 import CreateColumnForm from './CreateColumnForm';
 
-const DetailWrapper = ({
-    details,
-    currentMode,
-    detailActions,
-    editableColumn,
-    editableDetail,
-    options }
-) => {
+const DetailWrapper = ({ state, detailActions, }) => {
     return (
         <Row style={{ backgroundColor: '#e4e4e4' }}>
             <Col md={12}>
                 <Row>
                     <Col md={12}>
                         {
-                            currentMode === 'creation' ?
+                            state.currentMode === 'creation' ?
                                 <CreateColumnForm
                                     onUpdate={detailActions.updateEditableColumn}
                                     onSave={detailActions.createColumn}
                                     onCancel={detailActions.finishCreation}
-                                    options={options}
-                                    item={editableColumn} /> :
+                                    options={state.options}
+                                    item={state.editableColumn} /> :
                                 <ActionsWrapper
-                                    currentMode={currentMode}
+                                    currentMode={state.currentMode}
                                     startCreation={detailActions.startCreation}
                                     startExclusion={detailActions.startExclusion}
                                     finishExclusion={detailActions.finishExclusion} />
@@ -40,14 +33,11 @@ const DetailWrapper = ({
                 <Row>
                     <Col md={12}>
                         {
-                            details.map((detail, index) => (
+                            state.details.map((detail, index) => (
                                 <Detail
                                     key={index}
-                                    currentMode={currentMode}
+                                    currentMode={state.currentMode}
                                     detail={detail}
-                                    options={options}
-                                    editableColumn={editableColumn}
-                                    editableDetail={editableDetail}
                                     actions={detailActions} />
                             ))
                         }
@@ -59,26 +49,18 @@ const DetailWrapper = ({
 };
 
 DetailWrapper.propTypes = {
-    details: PropTypes.array.isRequired,
-    currentMode: PropTypes.string.isRequired,
+    state: PropTypes.object,
     detailActions: PropTypes.object.isRequired,
-    editableColumn: PropTypes.object.isRequired,
 }
 
 DetailWrapper.defaultProps = {
-    details: [],
-    currentMode: 'none',
+    state: {},
     detailActions: {},
-    editableColumn: {},
 };
 
 const mapStateToProps = ({ layoutDetail }) => (
     {
-        details: layoutDetail.toJS().details,
-        currentMode: layoutDetail.toJS().currentMode,
-        editableColumn: layoutDetail.toJS().editableColumn,
-        editableDetail: layoutDetail.toJS().editableDetail,
-        options: layoutDetail.toJS().options,
+        state: layoutDetail.toJS(),
     }
 );
 

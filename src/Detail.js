@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import DraggableArea from './DraggableArea';
 import DetailForm from './DetailForm';
+import DetailData from './DetailData';
 
 const Detail = (
     {
         detail,
         currentMode,
         options,
+        agroupOptions,
         editableColumn,
         editableDetail,
         actions
@@ -28,9 +31,13 @@ const Detail = (
                         (currentMode === 'detailEdition' &&
                             editableDetail.detailOrder === detail.detailOrder) ?
                             <DetailForm
+                                onSave={actions.saveEditableDetail}
+                                onUpdate={actions.updateEditableDetail}
                                 onCancel={actions.finishDetailEdition}
+                                agroupOptions={agroupOptions}
                                 detail={editableDetail} /> :
                             <DetailData
+                                agroupOptions={agroupOptions}
                                 detail={detail}
                                 onEdit={actions.startDetailEdition}
                                 onRemove={actions.removeDetail} />
@@ -62,6 +69,7 @@ Detail.propTypes = {
     detail: PropTypes.object,
     currentMode: PropTypes.string,
     options: PropTypes.array,
+    agroupOptions: PropTypes.array,
     editableColumn: PropTypes.object,
     editableDetail: PropTypes.object,
     actions: PropTypes.object,
@@ -71,42 +79,19 @@ Detail.defaultProps = {
     detail: {},
     currentMode: 'none',
     options: [],
+    agroupOptions: [],
     editableColumn: {},
     editableDetail: {},
     actions: {},
 };
 
-const DetailData = ({ detail, onEdit, onRemove }) => {
-    return (
-        <Row>
-            <Col md={1}>
-                {detail.line}
-            </Col>
-            <Col md={2}>
-                {detail.detailCount}
-            </Col>
-            <Col md={5}>
-            </Col>
-            <Col md={1}>
-                <Button bsStyle="link" onClick={() => onEdit(detail)}>editar</Button>
-            </Col>
-            <Col md={1}>
-                <Button bsStyle="link" onClick={() => onRemove(detail)}>excluir</Button>
-            </Col>
-        </Row>
-    )
-}
+const mapStateToProps = ({ layoutDetail }) => (
+    {
+        options: layoutDetail.toJS().options,
+        editableColumn: layoutDetail.toJS().editableColumn,
+        editableDetail: layoutDetail.toJS().editableDetail,
+        agroupOptions: layoutDetail.toJS().agroupOptions,
+    }
+);
 
-DetailData.propTypes = {
-    detail: PropTypes.object,
-    onRemove: PropTypes.func,
-    onEdit: PropTypes.func,
-};
-
-DetailData.defaultProps = {
-    detail: {},
-    onRemove: () => { },
-    onEdit: () => { },
-};
-
-export default Detail;
+export default connect(mapStateToProps)(Detail);

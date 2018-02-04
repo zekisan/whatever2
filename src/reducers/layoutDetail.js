@@ -5,14 +5,50 @@ import {
     UPDATE_EDITABLE_COLUMN,
 
     UPDATE_DETAILS,
+    UPDATE_EDITABLE_DETAIL,
 } from '../actions/layoutDetail';
 
 const DEFAULT_STATE = Immutable.fromJS({
+    agroupOptions: [
+        {
+            selectSel: 'aa',
+            selectDesc: 'AA',
+        },
+        {
+            selectSel: 'bb',
+            selectDesc: 'BB',
+        },
+        {
+            selectSel: 'cc',
+            selectDesc: 'CC',
+        },
+        {
+            selectSel: 'dd',
+            selectDesc: 'DD',
+        },
+        {
+            selectSel: 'ee',
+            selectDesc: 'EE',
+        },
+        {
+            selectSel: 'ff',
+            selectDesc: 'FF',
+        },
+        {
+            selectSel: 'gg',
+            selectDesc: 'GG',
+        },
+        {
+            selectSel: 'hh',
+            selectDesc: 'HH',
+        },
+    ],
     details: [
         {
             line: 1,
             detailOrder: '10',
             detailCount: 'R',
+            agroup: 'aa,bb,hh',
             items: [
                 {
                     line: 1,
@@ -110,6 +146,7 @@ const DEFAULT_STATE = Immutable.fromJS({
             line: 2,
             detailOrder: '20',
             detailCount: 'S',
+            agroup: 'gg,dd,hh',
             items: [
                 {
                     line: 1,
@@ -167,9 +204,11 @@ export default function reducer(state = DEFAULT_STATE, action) {
 
         case SET_MODE:
             return state.set('currentMode', action.value)
-                .set('editableDetail', action.editableDetail);
+                .set('editableDetail', action.editableDetail || {});
         case UPDATE_DETAILS:
             return state.set('details', action.details);
+        case UPDATE_EDITABLE_DETAIL:
+            return state.updateIn(['editableDetail'], column => Immutable.fromJS(column).set(action.key, action.value));
         default:
             return state;
     }
