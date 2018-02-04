@@ -2,67 +2,80 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import DraggableArea from './DraggableArea';
+import DetailDraggableArea from './DetailDraggableArea';
 import DetailForm from './DetailForm';
 import DetailData from './DetailData';
 
-const Detail = (
-    {
-        detail,
-        currentMode,
-        options,
-        agroupOptions,
-        editableColumn,
-        editableDetail,
-        actions
-    }
-) => {
-    const groupedItems = [];
-    for (let i = 1; i <= 5; i++) {
-        const group = detail.items.filter(item => item.line === i);
-        groupedItems.push(group);
+class Detail extends React.Component {
+    constructor(props) {
+        super(props);
+        this.updateItemsGroups = this.updateItemsGroups.bind(this);
     }
 
-    return (
-        <Row style={{ backgroundColor: '#8c5151' }}>
-            <Col md={12}>
-                <Row>
-                    {
-                        (currentMode === 'detailEdition' &&
-                            editableDetail.detailOrder === detail.detailOrder) ?
-                            <DetailForm
-                                onSave={actions.saveEditableDetail}
-                                onUpdate={actions.updateEditableDetail}
-                                onCancel={actions.finishDetailEdition}
-                                agroupOptions={agroupOptions}
-                                detail={editableDetail} /> :
-                            <DetailData
-                                agroupOptions={agroupOptions}
-                                detail={detail}
-                                onEdit={actions.startDetailEdition}
-                                onRemove={actions.removeDetail} />
-                    }
-                </Row>
-                <Row>
-                    <Col md={12}>
+    updateItemsGroups(reordered) {
+        const { actions, editableDetail } = this.props;
+        actions.updateItemsGroups(editableDetail, reordered);
+    }
+
+    render() {
+        const {
+            detail,
+            currentMode,
+            options,
+            agroupOptions,
+            editableColumn,
+            editableDetail,
+            actions
+        } = this.props;
+        const groupedItems = [];
+        for (let i = 1; i <= 5; i++) {
+            const group = editableDetail.items.filter(item => item.line === i);
+            groupedItems.push(group);
+        }
+
+        return (
+            <Row style={{ backgroundColor: '#8c5151' }}>
+                <Col md={12}>
+                    <Row>
                         {
                             (currentMode === 'detailEdition' &&
                                 editableDetail.detailOrder === detail.detailOrder) ?
-                                groupedItems.map((group, index) => (
-                                    <DraggableArea
-                                        key={index}
-                                        currentMode={currentMode}
-                                        items={group}
-                                        options={options}
-                                        editableColumn={editableColumn}
-                                        actions={actions} />
-                                )) : null
+                                <DetailForm
+                                    onSave={actions.saveEditableDetail}
+                                    onUpdate={actions.updateEditableDetail}
+                                    onCancel={actions.finishDetailEdition}
+                                    agroupOptions={agroupOptions}
+                                    detail={editableDetail} /> :
+                                <DetailData
+                                    agroupOptions={agroupOptions}
+                                    detail={detail}
+                                    onEdit={actions.startDetailEdition}
+                                    onRemove={actions.removeDetail} />
                         }
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
-    );
+                    </Row>
+                    <Row>
+                        <Col md={12}>
+                            {
+                                (currentMode === 'detailEdition' &&
+                                    editableDetail.detailOrder === detail.detailOrder) ?
+                                    groupedItems.map((group, index) => (
+                                        <DetailDraggableArea
+                                            key={index}
+                                            currentMode={currentMode}
+                                            onReorder={this.updateItemsGroups}
+                                            items={group}
+                                            options={options}
+                                            editableDetail={editableDetail}
+                                            editableColumn={editableColumn}
+                                            actions={actions} />
+                                    )) : null
+                            }
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        );
+    }
 }
 
 Detail.propTypes = {
@@ -81,7 +94,9 @@ Detail.defaultProps = {
     options: [],
     agroupOptions: [],
     editableColumn: {},
-    editableDetail: {},
+    editableDetail: {
+        items: [],
+    },
     actions: {},
 };
 

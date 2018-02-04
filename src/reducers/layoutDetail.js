@@ -1,9 +1,9 @@
 import Immutable from 'immutable';
 import {
     UPDATE_ITEMS_GROUPS,
-    SET_MODE,
-    UPDATE_EDITABLE_COLUMN,
 
+    SET_MODE,
+    SET_EDITABLE_COLUMN,
     UPDATE_DETAILS,
     UPDATE_EDITABLE_DETAIL,
 } from '../actions/layoutDetail';
@@ -190,7 +190,9 @@ const DEFAULT_STATE = Immutable.fromJS({
 
     // none, detailEdition, creation, edition, exclusion
     currentMode: 'none',
-    editableDetail: {},
+    editableDetail: {
+        items: [],
+    },
     editableColumn: {},
 });
 
@@ -198,13 +200,16 @@ export default function reducer(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case UPDATE_ITEMS_GROUPS:
             return state.set('items', action.items);
-        case UPDATE_EDITABLE_COLUMN:
-            return state.updateIn(['editableColumn'], column => Immutable.fromJS(column).set(action.key, action.value));
 
 
         case SET_MODE:
             return state.set('currentMode', action.value)
-                .set('editableDetail', action.editableDetail || {});
+                .set('editableDetail', action.editableDetail || {
+                    items: [],
+                })
+                .set('editableColumn', {});
+        case SET_EDITABLE_COLUMN:
+            return state.set('editableColumn', action.editableColumn);
         case UPDATE_DETAILS:
             return state.set('details', action.details);
         case UPDATE_EDITABLE_DETAIL:
