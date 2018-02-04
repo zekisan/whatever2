@@ -4,13 +4,14 @@ import { Grid } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 import store from './store';
 import HeaderWrapper from './HeaderWrapper';
+import DetailWrapper from './DetailWrapper';
 import TrailerWrapper from './TrailerWrapper';
 import './App.css';
 
 class App extends Component {
   render() {
     switch (this.props.step) {
-      case 1:
+      case 2:
         return (
           <Provider store={store}>
             <Grid>
@@ -18,7 +19,15 @@ class App extends Component {
             </Grid>
           </Provider>
         );
-      case 2:
+      case 3:
+        return (
+          <Provider store={store}>
+            <Grid>
+              <DetailWrapper />
+            </Grid>
+          </Provider>
+        );
+      case 4:
         return (
           <Provider store={store}>
             <Grid>
@@ -37,7 +46,7 @@ App.propTypes = {
 };
 
 App.defaultProps = {
-  step: 2,
+  step: 3,
 };
 
 export default App;
