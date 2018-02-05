@@ -107,3 +107,5 @@ export const createDetail = (detail) => (dispatch, getState) => {
     dispatch({ type: UPDATE_DETAILS, details });
     restartCurrentMode()(dispatch);
 }
+
+export const startDetailEdition = (detail) => (dispatch) => (dispatch({ type: SET_MODE, value: 'columnCreation' }));

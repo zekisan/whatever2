@@ -91,7 +91,7 @@ const DetailsActions = ({
         default:
             return (<DetailActionsWrapper
                 startDetailCreation={actions.startDetailCreation}
-                startExclusion={actions.startExclusion} />);
+                startColumnCreation={actions.startColumnCreation} />);
     }
 }
 
