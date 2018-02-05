@@ -4,9 +4,10 @@ import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as layoutDetailActions from './actions/layoutDetail';
-import ActionsWrapper from './ActionsWrapper';
+import DetailActionsWrapper from './DetailActionsWrapper';
 import Detail from './Detail';
 import CreateColumnForm from './CreateColumnForm';
+import CreateDetailForm from './CreateDetailForm';
 
 const DetailWrapper = ({ state, detailActions, }) => {
     return (
@@ -14,22 +15,16 @@ const DetailWrapper = ({ state, detailActions, }) => {
             <Col md={12}>
                 <Row>
                     <Col md={12}>
-                        {
-                            state.currentMode === 'creation' ?
-                                <CreateColumnForm
-                                    onUpdate={detailActions.updateEditableColumn}
-                                    onSave={detailActions.createColumn}
-                                    onCancel={detailActions.finishCreation}
-                                    options={state.options}
-                                    item={state.editableColumn} /> :
-                                <ActionsWrapper
-                                    currentMode={state.currentMode}
-                                    startCreation={detailActions.startCreation}
-                                    startExclusion={detailActions.startExclusion}
-                                    finishExclusion={detailActions.finishExclusion} />
-                        }
+                        <DetailsActions
+                            currentMode={state.currentMode}
+                            actions={detailActions}
+                            options={state.options}
+                            agroupOptions={state.agroupOptions}
+                            editableColumn={state.editableColumn}
+                            editableDetail={state.editableDetail} />
                     </Col>
                 </Row>
+                <br />
                 <Row>
                     <Col md={12}>
                         {
@@ -69,3 +64,49 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailWrapper);
+
+const DetailsActions = ({
+    currentMode,
+    editableDetail,
+    editableColumn,
+    actions,
+    agroupOptions,
+    options
+}) => {
+    switch (currentMode) {
+        case 'detailCreation':
+            return (<CreateDetailForm
+                detail={editableDetail}
+                agroupOptions={agroupOptions}
+                onSave={actions.createDetail}
+                onUpdate={actions.updateEditableDetail}
+                onCancel={actions.finishDetailCreation} />);
+        case 'columnCreation':
+            return (<CreateColumnForm
+                onUpdate={actions.updateEditableColumn}
+                onSave={actions.createColumn}
+                onCancel={actions.finishCreation}
+                options={options}
+                item={editableColumn} />);
+        default:
+            return (<DetailActionsWrapper
+                startDetailCreation={actions.startDetailCreation}
+                startExclusion={actions.startExclusion} />);
+    }
+}
+
+DetailsActions.propTypes = {
+    currentMode: PropTypes.string,
+    editableColumn: PropTypes.object,
+    actions: PropTypes.object,
+    agroupOptions: PropTypes.array,
+    options: PropTypes.array,
+};
+
+DetailsActions.defaultProps = {
+    currentMode: 'none',
+    editableColumn: {},
+    actions: {},
+    agroupOptions: [],
+    options: [],
+};

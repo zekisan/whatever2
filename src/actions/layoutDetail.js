@@ -92,3 +92,18 @@ export const saveEditableColumn = (detail, savingItem) => (dispatch) => {
     updateEditableDetail('items', items)(dispatch);
     restartEditableColumn()(dispatch);
 };
+
+export const startDetailCreation = () => (dispatch) => (dispatch({ type: SET_MODE, value: 'detailCreation', editableDetail: {
+    items: [],
+} }));
+export const finishDetailCreation = () => (dispatch) => {
+    restartCurrentMode()(dispatch)
+};
+
+export const createDetail = (detail) => (dispatch, getState) => {
+    let details = [...getState().layoutDetail.toJS().details];
+    details.push({ ...detail, line: details.length + 1, detailOrder: ((details.length + 1) * 10).toString(), items: []});
+
+    dispatch({ type: UPDATE_DETAILS, details });
+    restartCurrentMode()(dispatch);
+}

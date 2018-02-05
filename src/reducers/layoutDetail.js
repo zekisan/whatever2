@@ -188,7 +188,7 @@ const DEFAULT_STATE = Immutable.fromJS({
         },
     ],
 
-    // none, detailEdition, creation, edition, exclusion
+    // none, detailEdition, detailCreation columnCreation
     currentMode: 'none',
     editableDetail: {
         items: [],
